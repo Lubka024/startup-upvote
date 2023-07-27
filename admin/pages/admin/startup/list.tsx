@@ -26,13 +26,6 @@ export default () => {
 				</GenericCell>
 				<TextCell field="name" header="Name" />
 				<TextCell field="description" header="Description" />
-				<GenericCell shrunk>
-					<ImageFieldView
-						srcField="logo.url"
-						formatUrl={srcFieldValue => getImageResizeUrl(srcFieldValue, { width: 100 })}
-						width={100}
-					/>
-				</GenericCell>
 				<HasOneSelectCell field="createdBy" header="createdBy" options="User.name" />
 				<NumberCell field="stats.totalUpvotes" header="Total upvotes" />
 				<GenericCell shrunk canBeHidden={false}>
