@@ -1,4 +1,4 @@
-import { DataGridScope, DeleteEntityButton, GenericCell, HasOneSelectCell, ImageFieldView , LinkButton, TextCell } from '@contember/admin'
+import { DataGridScope, DeleteEntityButton, GenericCell, HasOneSelectCell, ImageFieldView, LinkButton, NumberCell, TextCell } from '@contember/admin'
 import { Directive } from '../../../components/Directives'
 import { SlotSources } from '../../../components/Slots'
 import { getImageResizeUrl } from '../../../scripts/getImageResizeUrl'
@@ -21,16 +21,20 @@ export default () => {
 						Open detail
 					</LinkButton>
 				</GenericCell>
+				<GenericCell>
+					<ImageFieldView srcField='logo.url' width={100} />
+				</GenericCell>
 				<TextCell field="name" header="Name" />
 				<TextCell field="description" header="Description" />
 				<GenericCell shrunk>
-					<ImageFieldView 
+					<ImageFieldView
 						srcField="logo.url"
 						formatUrl={srcFieldValue => getImageResizeUrl(srcFieldValue, { width: 100 })}
 						width={100}
 					/>
 				</GenericCell>
 				<HasOneSelectCell field="createdBy" header="createdBy" options="User.name" />
+				<NumberCell field="stats.totalUpvotes" header="Total upvotes" />
 				<GenericCell shrunk canBeHidden={false}>
 					<DeleteEntityButton immediatePersist />
 				</GenericCell>

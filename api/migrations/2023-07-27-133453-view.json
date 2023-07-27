@@ -1,0 +1,112 @@
+{
+	"formatVersion": 5,
+	"modifications": [
+		{
+			"modification": "removeIndexNames"
+		},
+		{
+			"modification": "removeUniqueConstraint",
+			"entityName": "User",
+			"fields": [
+				"personId",
+				"email"
+			]
+		},
+		{
+			"modification": "createView",
+			"entity": {
+				"name": "StartUpStats",
+				"primary": "id",
+				"primaryColumn": "id",
+				"tableName": "start_up_stats",
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"columnType": "uuid",
+						"nullable": false,
+						"type": "Uuid"
+					},
+					"startup": {
+						"type": "OneHasOne",
+						"name": "startup",
+						"target": "Startup",
+						"joiningColumn": {
+							"columnName": "startup_id",
+							"onDelete": "restrict"
+						},
+						"nullable": true,
+						"inversedBy": "stats"
+					},
+					"totalUpvotes": {
+						"name": "totalUpvotes",
+						"columnName": "total_upvotes",
+						"columnType": "integer",
+						"nullable": true,
+						"type": "Integer",
+						"default": 0
+					}
+				},
+				"unique": [],
+				"indexes": [],
+				"eventLog": {
+					"enabled": true
+				},
+				"view": {
+					"sql": "SELECT \n\tgen_random_uuid() as id,\n\tid AS startup_id,\n\t(SELECT COUNT(*) FROM upvote WHERE startup.id = startup_id) AS total_upvotes\n\tFROM startup"
+				}
+			}
+		},
+		{
+			"modification": "createRelationInverseSide",
+			"entityName": "Startup",
+			"relation": {
+				"type": "OneHasOne",
+				"name": "stats",
+				"target": "StartUpStats",
+				"ownedBy": "startup",
+				"nullable": true
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/user/entities/StartUpStats",
+					"value": {
+						"predicates": {},
+						"operations": {
+							"read": {
+								"startup": true,
+								"totalUpvotes": true
+							},
+							"create": {
+								"startup": true,
+								"totalUpvotes": true
+							}
+						}
+					}
+				},
+				{
+					"op": "remove",
+					"path": "/roles/user/entities/Startup/operations/update"
+				},
+				{
+					"op": "add",
+					"path": "/roles/user/entities/Startup/operations/read/stats",
+					"value": true
+				},
+				{
+					"op": "add",
+					"path": "/roles/user/entities/Startup/operations/create/stats",
+					"value": true
+				},
+				{
+					"op": "remove",
+					"path": "/roles/user/entities/Upvote/operations/update"
+				}
+			]
+		}
+	]
+}
