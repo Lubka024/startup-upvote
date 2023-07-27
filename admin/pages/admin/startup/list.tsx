@@ -16,20 +16,16 @@ export default () => {
 			</SlotSources.Actions>
 			<Directive name="content-max-width" content={null} />
 			<DataGridScope entities="Startup" itemsPerPage={50}>
-				<GenericCell shrunk canBeHidden={false}>
-					<LinkButton to="admin/startup/detail(id: $entity.id)">
-						Open detail
-					</LinkButton>
-				</GenericCell>
 				<GenericCell>
 					<ImageFieldView srcField='logo.url' width={100} />
 				</GenericCell>
 				<TextCell field="name" header="Name" />
 				<TextCell field="description" header="Description" />
-				<HasOneSelectCell field="createdBy" header="createdBy" options="User.name" />
 				<NumberCell field="stats.totalUpvotes" header="Total upvotes" />
 				<GenericCell shrunk canBeHidden={false}>
-					<DeleteEntityButton immediatePersist />
+					<LinkButton to="admin/startup/detail(id: $entity.id)">
+						Open detail
+					</LinkButton>
 				</GenericCell>
 			</DataGridScope>
 		</>
